@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Canvas</title>
+        <style></style>
+    </head>
+    <body>
+        <canvas
+            height="500px"
+            width="500px"
+            id="canvas"
+            style="border: 1px solid #000000"
+        ></canvas>
+    </body>
+    <script>
+        // Varibles
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        let lastRenderTime = 0;
+
+        var xProjected;
+        var yProjected;
+
+        var POV = 250;
+
+        ctx.translate(250, 250);
+
+        vertexs = [
+            [23, 63, 85],
+            [23, -63, 85],
+            [-86, -63, 22],
+            [-86, 63, 22],
+            [86, 63, -24],
+            [86, -63, -24],
+            [-23, -63, -87],
+            [-23, 63, -87],
+        ];
+        edges = [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 0],
+            [4, 5],
+            [5, 6],
+            [6, 7],
+            [7, 4],
+            [0, 4],
+            [1, 5],
+            [2, 6],
+            [3, 7],
+        ];
+        projected = [];
+
+        for (let i = 0; i < vertexs.length; i++) {
+            projectionVertex(vertexs[i][0], vertexs[i][1], vertexs[i][2]);
+        }
+
+        //Updating frames
+        function main(currentTime) {
+            window.requestAnimationFrame(main);
+            const secondsSinceLastRender =
+                (currentTime - lastRenderTime) / 1000;
+            if (secondsSinceLastRender < 1 / 60) return;
+
+            lastRenderTime = currentTime;
+
+            draw();
+        }
+
+        //Key listener
+        //document.addEventListener('keydown', (e) => {
+        //    if (e.code == "KeyW") {
+        //
+        //    }
+        //    if (e.code == "KeyS") {
+        //
+        //    }
+        //    if (e.code == "KeyA") {
+        //
+        //    }
+        //    if (e.code == "KeyD") {
+        //
+        //    }
+        //})
+
+        //Find the project poionts
+        function projectionVertex(x, y, z) {
+            //Projects it on the screen
+            xProjected = (POV * x) / (z + POV);
+            yProjected = (POV * y) / (z + POV);
+
+            //Adds to the drawing looping
+            projected.push([xProjected, yProjected]);
+
+            //Clears the varibles
+            xProjected = 0;
+            yProjected = 0;
+        }
+
+        //Drawing Function
+        function draw() {
+            //Set Line width
+            ctx.lineWidth = 1;
+
+            //Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            //Draws every point in projected
+            for (let i = 0; i < projected.length; i++) {
+                ctx.fillRect(projected[i][0], projected[i][1], 1, 1);
+            }
+
+            //Draws the lines for every point
+            for (let i = 0; i < edges.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(
+                    projected[edges[i][0]][0],
+                    projected[edges[i][0]][1]
+                );
+                ctx.lineTo(
+                    projected[edges[i][1]][0],
+                    projected[edges[i][1]][1]
+                );
+                ctx.stroke();
+            }
+        }
+
+        window.requestAnimationFrame(main);
+    </script>
+</html>
