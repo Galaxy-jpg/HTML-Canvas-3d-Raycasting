@@ -1,11 +1,11 @@
 # HTML Canvas 3d Ray Casting
 
 ### **Table Of Content**
-- [Description](##Description)
-- [Explanation](##Explanation)
-    - [Understanding Ray casting](###Understanding-Ray-casting)
-    - [How to do Ray Casting](###How-to-do-Ray-Casting)
-- [How to Help](##How-To-Help)
+- [Description](#Description)
+- [Explanation](#Explanation)
+    - [Understanding Ray casting](#Understanding-Ray-casting)
+    - [How to do Ray Casting](#How-to-do-Ray-Casting)
+- [How to Help](#How-To-Help)
 
 ## **Description**
 
